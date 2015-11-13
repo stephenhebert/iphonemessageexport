@@ -21,6 +21,7 @@ namespace iPhoneMessageExport
     {
         string HTMLHEADERFILE = "../../headers.html";
 
+        // move to helper library
         public static int getTimestamp(DateTime datetime)
         {
             DateTime sTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -28,6 +29,7 @@ namespace iPhoneMessageExport
             return (int)(datetime - sTime).TotalSeconds;
         }
 
+        // move to helper library
         public static DateTime timestampToDateTime(int timestamp)
         {
             DateTime sTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -49,6 +51,9 @@ namespace iPhoneMessageExport
         public Form1()
         {
             InitializeComponent();
+
+            System.Windows.Forms.ToolTip ToolTip1 = new System.Windows.Forms.ToolTip();
+            ToolTip1.SetToolTip(this.btnLoad, "Load Backup File");
 
             string backupPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Apple Computer\MobileSync\Backup";
             DirectoryInfo dirBackup = new DirectoryInfo(backupPath);
@@ -111,16 +116,27 @@ namespace iPhoneMessageExport
                 "INNER JOIN message m ON cm.message_id = m.ROWID INNER JOIN handle h ON m.handle_id = h.ROWID ORDER BY chatgroup;";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader row = command.ExecuteReader();
-            lbMessageGroup.Items.Clear();
+
+            DataTable dtMessageGroups = new DataTable();
+            dtMessageGroups.Columns.Add("Value", typeof(string));
+            dtMessageGroups.Columns.Add("Display", typeof(string));
+            dtMessageGroups.DefaultView.Sort = "Value ASC";
+
             while (row.Read())
             {
-                //Console.WriteLine("Chatgroup: " + row["chatgroup"]);
-                if (row["chatgroup"].ToString().Trim()!="")
-                    lbMessageGroup.Items.Add(row["chatgroup"]);
+                if (row["chatgroup"].ToString().Trim() != "")
+                {
+                    dtMessageGroups.Rows.Add(row["chatgroup"], Regex.Replace(row["chatgroup"].ToString(), @"\+\d(\d{3})(\d{3})(\d{4})", "($1)$2-$3"));
+                }
             }
-            //Console.ReadKey();
             row.Close();
             m_dbConnection.Close(); // should only do this once?
+
+            DataView dvMessageGroups = dtMessageGroups.DefaultView;
+            lbMessageGroup.DataSource = new BindingSource(dtMessageGroups, null);
+            lbMessageGroup.DisplayMember = "Display";
+            lbMessageGroup.ValueMember = "Value";
+
         }
 
         private void lbMessageGroup_SelectedIndexChanged(object sender, EventArgs e)
@@ -128,6 +144,7 @@ namespace iPhoneMessageExport
             btnExport.Enabled = true;
         }
 
+        /* move to helper library */
         public static string HexStringFromBytes(byte[] bytes)
         {
             var sb = new StringBuilder();
@@ -139,6 +156,7 @@ namespace iPhoneMessageExport
             return sb.ToString();
         }
 
+        /* move to helper library */
         private static string getSHAHash(string s)
         {
             byte[] bytes = Encoding.UTF8.GetBytes(s);
@@ -151,11 +169,9 @@ namespace iPhoneMessageExport
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            string chatGroup = lbMessageGroup.GetItemText(lbMessageGroup.SelectedItem);
+            string chatGroup = lbMessageGroup.SelectedValue.ToString();
             bool isGroupMessage = (chatGroup.Contains(",")) ? true : false;
             string htmlOutput = "";
-
-            // FEATURE: HTML PREVIEW
 
             // show dialog for where to save html file
             SaveFileDialog htmlFileDialog = new SaveFileDialog();
@@ -166,11 +182,8 @@ namespace iPhoneMessageExport
             // If the file name is not an empty string open it for saving.
             if (htmlFileDialog.FileName == "")
             {
-                //MessageBox.Show("Filename cannot be empty!");
                 return;
             }
-
-            //MessageBox.Show(htmlFileDialog.FileName);
 
             // query database
             if (dbFile!=null)
@@ -200,7 +213,6 @@ namespace iPhoneMessageExport
                 htmlOutput += "<H2>as of " + dbFileDate + "</H2>\n";
                 htmlOutput += "<DIV id=\"messages\">\n";
                 // date, service, direction, id, text, filereflist
-                //htmlOutput += "<TR><TH>DATE</TH><TH>SERVICE</TH><TH>DIRECTION</TH><TH>ID</TH><TH>TEXT</TH><TH>FILEREFLIST</TH></TR>\n";
                 while (row.Read())
                 {
                     string content = (string)row["text"];
@@ -212,10 +224,23 @@ namespace iPhoneMessageExport
                     {
                         List<string> mediaFileList = row["filereflist"].ToString().Split(',').ToList();
                         foreach (string mediaFile in mediaFileList) {
+                            string replace = null;
                             // get extension of mediaFile
+                            switch (mediaFile.Substring(mediaFile.LastIndexOf('.')).ToLower())
+                            {
+                                // image 
+                                case ".jpeg":
+                                case ".jpg":
+                                case ".png":
+                                    replace = "<img src=\"" + dbFileDir + @"\" + getSHAHash(mediaFile) + "\"><!-- " + mediaFile + " //-->";
+                                    break;
+                                default:
+                                    replace = "";
+                                    break;
+                            }
                             // do switch statement for replacement string
                             Regex rgx = new Regex(@"\[MEDIA\]");
-                            content = rgx.Replace(content, "<img src=\"" + dbFileDir + @"\" + getSHAHash(mediaFile) + "\"><!-- "+ mediaFile + " //-->", 1);
+                            content = rgx.Replace(content,replace, 1);
                         }
                     }
                     htmlOutput += "<DIV class=\"content\">" + content + "</DIV>\n";
@@ -242,10 +267,6 @@ namespace iPhoneMessageExport
                 string replace = "$2/$3/$1 " + hour + ":$5" + suffix;
                 return match.Result(replace);
             });
-
-
-            //htmlOutput = datetimeRegex.Replace(htmlOutput, @"$2/$3/$1 $4:$5 am",datetimeEvaluator);
-
 
             // do this in separate thread so it won't lock up program
 
