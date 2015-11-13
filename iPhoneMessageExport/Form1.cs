@@ -19,6 +19,7 @@ namespace iPhoneMessageExport
 
     public partial class Form1 : Form
     {
+        string HTMLHEADERFILE = "../../headers.html";
 
         public static int getTimestamp(DateTime datetime)
         {
@@ -35,93 +36,11 @@ namespace iPhoneMessageExport
 
         private string addHTMLHeaders ( string html )
         {
-            html += "@import url(https://fonts.googleapis.com/css?family=Lato|Lato:300);\n";
-            html += "\n";
-            html += "body {\n";
-            html += "	margin: 0 auto;\n";
-            html += "	padding: 1.5em 0;\n";
-            html += "	width: 640px;\n";
-            html += "	font-family: \"Georgia\";\n";
-            html += "}\n";
-            html += "\n";
-            html += "h1 {\n";
-            html += "	margin-bottom: 0px;\n";
-            html += "}\n";
-            html += "\n";
-            html += "h2 {\n";
-            html += "	margin-top: 0px;\n";
-            html += "	font-size: 10pt;\n";
-            html += "}\n";
-            html += "\n";
-            html += "#messages {\n";
-            html += "	font-family: \"HelveticaNeue-Light\", \"Helvetica Neue Light\", \"Helvetica Neue\", \"Lato\", Helvetica, Arial, \"Lucida Grande\", sans-serif; \n";
-            html += "	font-weight: 400;\n";
-            html += "   overflow: auto;\n";
-            html += "}\n";
-            html += "\n";
-            html += "#messages .content {\n";
-            html += "   clear: left;\n";
-            html += "	padding: 15px 20px 15px 20px;\n";
-            html += "	border-radius: 1.5em;\n";
-            html += "	max-width: 320px;\n";
-            html += "	font-size: 16pt;\n";
-            html += "	margin: 3px;\n";
-            html += "   word-break:break-word;\n";
-            html += "}\n";
-            html += "\n";
-            html += "#messages img {\n";
-            html += "	max-width: 320px;\n";
-            html += "	border-bottom: 3px solid #fff;\n";
-            html += "}\n";
-            html += "\n";
-            html += "#messages img:first-child {\n";
-            html += "	border-top-left-radius: 1em;\n";
-            html += "	border-top-right-radius: 1em;\n";
-            html += "}\n";
-            html += "\n";
-            html += "#messages img:last-child {\n";
-            html += "   border: 0;\n";
-            html += "	border-bottom-left-radius: 1em;\n";
-            html += "	border-bottom-right-radius: 1em;\n";
-            html += "}\n";
-            html += "\n";
-            html += "#messages .sender {\n";
-            html += "	clear: left;\n";
-            html += "	float: left;\n";
-            html += "	margin-top: 5px;\n";
-            html += "	margin-left: 10px;\n";
-            html += "	font-size: 8pt;\n";
-            html += "}\n";
-            html += "\n";
-            html += "#messages .timestamp {\n";
-            html += "	clear: both;\n";
-            html += "	float: right;\n";
-            html += "	padding: 10px 15px 10px 15px;\n";
-            html += "	width: 80px;\n";
-            html += "	font-size: 8pt;\n";
-            html += "	text-align: center;\n";
-            html += "	color: #8E8E93;\n";
-            html += "}\n";
-            html += "\n";
-            html += "#messages .message-RCVD-iMessage .content, #messages .message-RCVD-SMS .content {\n";
-            html += "	background-color: #e5e5ea;\n";
-            html += "	float: left;\n";
-            html += "}\n";
-            html += "\n";
-            html += "#messages .message-SENT-SMS .content {\n";
-            html += "	background-color: #00dd4c;\n";
-            html += "	color: #fff;\n";
-            html += "	float: right;\n";
-            html += "}\n";
-            html += "\n";
-            html += "#messages .message-SENT-iMessage .content {\n";
-            html += "	background-color: #188dfd;\n";
-            html += "	color: #fff;\n";
-            html += "	float: right;\n";
-            html += "}\n";
-            return html;
+            string htmlHeaders = File.ReadAllText(HTMLHEADERFILE);
+            return html + htmlHeaders;
         }
 
+        /* GLOBAL variables */
         DataTable dtMessageFiles;
         string dbFile = null;
         string dbFileDate = null;
@@ -275,13 +194,7 @@ namespace iPhoneMessageExport
                 //string sql = "SELECT m.ROWID, cm.chat_id, (SELECT GROUP_CONCAT(h.id) FROM chat_handle_join ch INNER JOIN handle h on h.ROWID = ch.handle_id WHERE ch.chat_id = cm.chat_id GROUP BY ch.chat_id) as chatgroup, datetime(m.date+978307200,\"unixepoch\",\"localtime\") as date, m.service, CASE m.is_from_me WHEN 1 THEN \"SENT\" WHEN 0 THEN \"RCVD\" END as direction, h.id, CASE m.type WHEN 1 THEN \"GROUP\" WHEN 0 THEN \"1-ON-1\" END as type, replace(m.text,cast(X'EFBFBC' as text),\"[IMG]\") as text, (SELECT GROUP_CONCAT(\"MediaDomain-\"||substr(a.filename,3)) FROM message_attachment_join ma JOIN attachment a ON ma.attachment_id = a.ROWID WHERE ma.message_id = m.ROWID GROUP BY ma.message_id) as filereflist FROM chat_message_join cm INNER JOIN message m ON cm.message_id = m.ROWID INNER JOIN handle h ON m.handle_id = h.ROWID WHERE m.ROWID = \"16460\" ORDER BY chatgroup, date LIMIT 1;";
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                 SQLiteDataReader row = command.ExecuteReader();
-                htmlOutput += "<HTML>\n";
-                htmlOutput += "<HEAD>\n";
-                htmlOutput += "<TITLE>Messages from " + chatGroup + "</TITLE>\n";
-                htmlOutput += "<STYLE TYPE=\"text/css\">\n";
                 htmlOutput = addHTMLHeaders(htmlOutput);
-                htmlOutput += "</STYLE>\n";
-                htmlOutput += "</HEAD>\n";
                 htmlOutput += "<BODY>\n";
                 htmlOutput += "<H1>Messages from " + chatGroup + "</H1>\n";
                 htmlOutput += "<H2>as of " + dbFileDate + "</H2>\n";
@@ -291,8 +204,8 @@ namespace iPhoneMessageExport
                 while (row.Read())
                 {
                     string content = (string)row["text"];
-                    htmlOutput += "<DIV class=\"message-" + row["direction"] + "-" + row["service"] + "\">";
-                    htmlOutput += "<DIV class=\"timestamp\">" + row["date"] + "</DIV>";
+                    htmlOutput += "<DIV class=\"message message-" + row["direction"] + "-" + row["service"] + "\">";
+                    htmlOutput += "<DIV class=\"timestamp-placeholder\"></DIV><DIV class=\"timestamp\">" + row["date"] + "</DIV>";
                     if (isGroupMessage && row["direction"].ToString() == "RCVD" ) htmlOutput += "<DIV class=\"sender\">" + row["id"] + "</DIV>";
                     // replace image placeholders (ï¿¼) with image files 
                     if (row["filereflist"].ToString().Length > 0)

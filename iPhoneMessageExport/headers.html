@@ -1,0 +1,125 @@
+<!--
+// Comments...
+//
+//
+//-->
+<HTML>
+<HEAD>
+<TITLE>iPhone Backup :: Message Export</TITLE>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<SCRIPT LANGUAGE="text/javascript">
+<!--
+(function ($) {
+    // VERTICALLY ALIGN FUNCTION
+    $.fn.vAlign = function() {
+        return this.each(function(i){
+            var ah = $(this).height();
+            var ph = $(this).parent().height();
+            var mh = Math.ceil((ph-ah) / 2);
+            $(this).css('margin-top', mh);
+        });
+   };
+})(jQuery);
+
+$('.timestamp').vAlign();
+
+//-->
+</SCRIPT>
+<STYLE TYPE="text/css">
+@import url(https://fonts.googleapis.com/css?family=Lato|Lato:300);
+
+body {
+	margin: 0 auto;
+	padding: 1.5em 0;
+	width: 640px;
+	font-family: "Georgia";
+}
+
+h1 {
+	margin-bottom: 0px;
+}
+
+h2 {
+	margin-top: 0px;
+	font-size: 10pt;
+}
+
+#messages {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", "Lato", Helvetica, Arial, "Lucida Grande", sans-serif; 
+	font-weight: 400;
+	overflow: auto;
+}
+
+#messages .message {
+	position: relative;
+	overflow: auto;
+}
+
+
+#messages .content {
+	clear: left;
+	padding: 15px 20px 15px 20px;
+	border-radius: 1.5em;
+	max-width: 320px;
+	font-size: 16pt;
+	margin: 3px;
+	word-break:break-word;
+}
+
+#messages img {
+	max-width: 320px;
+	border-bottom: 3px solid #fff;
+}
+
+#messages img:first-child {
+	border-top-left-radius: 1em;
+	border-top-right-radius: 1em;
+}
+
+#messages img:last-child {
+	border: 0;
+	border-bottom-left-radius: 1em;
+	border-bottom-right-radius: 1em;
+}
+
+#messages .sender {
+	clear: left;
+	float: left;
+	margin-top: 5px;
+	margin-left: 10px;
+	font-size: 8pt;
+}
+
+#messages .timestamp {
+	padding: 10px 15px 10px 15px;
+	width: 80px;
+	font-size: 8pt;
+	text-align: center;
+	color: #8E8E93;
+}
+	
+#messages .timestamp-placeholder {
+	clear: both;
+	float: right;
+	padding: 10px 15px 10px 15px;
+	width: 80px;
+}
+
+#messages .message-RCVD-iMessage .content, #messages .message-RCVD-SMS .content {
+	background-color: #e5e5ea;
+	float: left;
+}
+
+#messages .message-SENT-SMS .content {
+	background-color: #00de4c;
+	color: #fff;
+	float: right;
+}
+
+#messages .message-SENT-iMessage .content {
+	background-color: #188dfd;
+	color: #fff;
+	float: right;
+}
+</STYLE>
+</HEAD>
