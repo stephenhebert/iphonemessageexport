@@ -71,7 +71,6 @@ namespace iPhoneMessageExport
 
             if (dbFile != null)
             {
-
                 // open SQLite data file
                 SQLiteConnection m_dbConnection;
                 m_dbConnection = new SQLiteConnection("Data Source=" + dbFile + ";Version=3;Read Only=True;FailIfMissing=True;");
@@ -247,7 +246,8 @@ namespace iPhoneMessageExport
             DirectoryInfo dirBackup = new DirectoryInfo(backupPath);
             if (!dirBackup.Exists)
             {
-                MessageBox.Show("Error: Cannot find iPhone backup folder.");
+                MessageBox.Show("Fatal Error: Cannot find iPhone backup folder.");
+                this.Close();
                 return; // the path does not exist
             }
 
@@ -260,7 +260,8 @@ namespace iPhoneMessageExport
             comboBackups.ValueMember = "Path";
 
             // enable comboBackups
-            comboBackups.Enabled = true;
+            if (comboBackups.Items.Count>0)
+                comboBackups.Enabled = true;
             // disable export button until listbox is populated
             btnExport.Enabled = false;
 
