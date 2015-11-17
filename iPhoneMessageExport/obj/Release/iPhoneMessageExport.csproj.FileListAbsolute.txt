@@ -1,6 +1,3 @@
-C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\obj\Release\iPhoneMessageExport.Form1.resources
-C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\obj\Release\iPhoneMessageExport.Properties.Resources.resources
-C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\obj\Release\iPhoneMessageExport.csproj.GenerateResource.Cache
 C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\bin\Release\iPhoneMessageExport.exe.config
 C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\bin\Release\iPhoneMessageExport.exe.manifest
 C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\bin\Release\iPhoneMessageExport.application
@@ -8,6 +5,10 @@ C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhon
 C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\bin\Release\iPhoneMessageExport.pdb
 C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\bin\Release\System.Data.SQLite.dll
 C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\bin\Release\System.Data.SQLite.xml
+C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\obj\Release\iPhoneMessageExport.csprojResolveAssemblyReference.cache
+C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\obj\Release\iPhoneMessageExport.Form1.resources
+C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\obj\Release\iPhoneMessageExport.Properties.Resources.resources
+C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\obj\Release\iPhoneMessageExport.csproj.GenerateResource.Cache
 C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\obj\Release\iPhoneMessageExport.exe.manifest
 C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\obj\Release\iPhoneMessageExport.application
 C:\Users\Stephen\Documents\Visual Studio 2015\Projects\iPhoneMessageExport\iPhoneMessageExport\obj\Release\iPhoneMessageExport.exe
