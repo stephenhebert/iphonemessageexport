@@ -248,8 +248,11 @@ namespace iPhoneMessageExport
             comboBackups.ValueMember = "Path";
 
             // enable comboBackups
-            if (comboBackups.Items.Count>0)
+            if (comboBackups.Items.Count > 0)
+            {
                 comboBackups.Enabled = true;
+                btnLoad.Enabled = true;
+            }
             // disable export button until listbox is populated
             btnExport.Enabled = false;
 

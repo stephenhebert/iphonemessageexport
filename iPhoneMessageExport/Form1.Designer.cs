@@ -94,6 +94,7 @@
             // 
             // btnLoad
             // 
+            this.btnLoad.Enabled = false;
             this.btnLoad.Image = ((System.Drawing.Image)(resources.GetObject("btnLoad.Image")));
             this.btnLoad.Location = new System.Drawing.Point(604, 24);
             this.btnLoad.Name = "btnLoad";
