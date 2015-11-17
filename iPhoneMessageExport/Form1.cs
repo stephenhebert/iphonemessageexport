@@ -20,7 +20,6 @@ namespace iPhoneMessageExport
         string dbFileDir = null;
         string messageGroup = null;
         string htmlFile = null;
-        string HTMLHEADERFILE = "headers.html";
         string backupPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Apple Computer\MobileSync\Backup";
         string formTitle = null;
 
@@ -100,17 +99,6 @@ namespace iPhoneMessageExport
         }
 
         /// <summary>
-        /// Inserts HTML headers from header file.
-        /// </summary>
-        /// <param name="html"></param>
-        /// <returns></returns>
-        private string addHTMLHeaders(string html)
-        {
-            string htmlHeaders = File.ReadAllText(HTMLHEADERFILE);
-            return html + htmlHeaders;
-        }
-
-        /// <summary>
         /// Export all messages for MessageGroup in backup file into HTML file. (THREAD)
         /// </summary>
         private void exportHTMLForMessageGroup()
@@ -151,7 +139,7 @@ namespace iPhoneMessageExport
                     "WHERE chatgroup = \"" + messageGroup + "\" ORDER BY date";
                 command = new SQLiteCommand(sql, m_dbConnection);
                 row = command.ExecuteReader();
-                htmlOutput = addHTMLHeaders(htmlOutput);
+                htmlOutput += Properties.Resources.HTMLHeaders; // add html headers
                 htmlOutput += "<BODY>\n";
                 htmlOutput += "<H1>Messages from " + messageGroup + "</H1>\n";
                 htmlOutput += "<H2>as of " + dbFileDate + "</H2>\n";
@@ -312,13 +300,6 @@ namespace iPhoneMessageExport
                 return;
             }
             htmlFile = htmlFileDialog.FileName;
-
-            if (!File.Exists(HTMLHEADERFILE))
-            {
-                MessageBox.Show("HTML header file (headers.html) not found in application folder.");
-                return;
-
-            }
 
             // disable interface while exporting
             comboBackups.Enabled = false;

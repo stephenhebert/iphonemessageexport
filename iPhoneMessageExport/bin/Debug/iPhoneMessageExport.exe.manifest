@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="iPhoneMessageExport.exe" size="25000">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="iPhoneMessageExport.exe" size="27048">
       <assemblyIdentity name="iPhoneMessageExport" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>zbXqhJ0pMwnUd5Ky0y47Cd9C1xPRl+KGnoJ3JjZ6scw=</dsig:DigestValue>
+        <dsig:DigestValue>PTSxICklDNAERskMn8v/wEBVpE0mLsPAUkbzp5IhIwg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -65,15 +65,6 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="headers.html" size="2130">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>RBRfY9TYd+dqzItX1DBZKnA4++rqFQ9mxpUUufuVwM0=</dsig:DigestValue>
-    </hash>
-  </file>
   <file name="iPhoneMessageExport.exe.config" size="539">
     <hash>
       <dsig:Transforms>
