@@ -119,7 +119,7 @@ namespace iPhoneMessageExport
                 // get count of messages for progress bar
                 string sql = "SELECT count(*) as count, (SELECT GROUP_CONCAT(h.id) FROM chat_handle_join ch " +
                     "INNER JOIN handle h on h.ROWID = ch.handle_id WHERE ch.chat_id = cm.chat_id GROUP BY ch.chat_id) as chatgroup " +
-                    "FROM chat_message_join cm INNER JOIN message m ON cm.message_id = m.ROWID INNER JOIN handle h ON m.handle_id = h.ROWID " +
+                    "FROM chat_message_join cm INNER JOIN message m ON cm.message_id = m.ROWID LEFT JOIN handle h ON m.handle_id = h.ROWID " +
                     "WHERE chatgroup = \"" + messageGroup + "\" LIMIT 1";
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                 SQLiteDataReader row = command.ExecuteReader();                
@@ -135,7 +135,7 @@ namespace iPhoneMessageExport
                     "CASE m.type WHEN 1 THEN \"GROUP\" WHEN 0 THEN \"1 - ON - 1\" END as type, replace(m.text,cast(X'EFBFBC' as text),\"[MEDIA]\") as text, " +
                     "(SELECT GROUP_CONCAT(\"MediaDomain-\"||substr(a.filename,3)) FROM message_attachment_join ma " +
                     "JOIN attachment a ON ma.attachment_id = a.ROWID WHERE ma.message_id = m.ROWID GROUP BY ma.message_id) as filereflist " +
-                    "FROM chat_message_join cm INNER JOIN message m ON cm.message_id = m.ROWID INNER JOIN handle h ON m.handle_id = h.ROWID " +
+                    "FROM chat_message_join cm INNER JOIN message m ON cm.message_id = m.ROWID LEFT JOIN handle h ON m.handle_id = h.ROWID " +
                     "WHERE chatgroup = \"" + messageGroup + "\" ORDER BY date";
                 command = new SQLiteCommand(sql, m_dbConnection);
                 row = command.ExecuteReader();
@@ -293,7 +293,7 @@ namespace iPhoneMessageExport
 
             // show dialog for where to save html file
             SaveFileDialog htmlFileDialog = new SaveFileDialog();
-            htmlFileDialog.Filter = "HTML File|*.htm,*.html";
+            htmlFileDialog.Filter = "HTML File|*.htm;*.html";
             htmlFileDialog.Title = "Save an HTML File";
             htmlFileDialog.ShowDialog();
 
